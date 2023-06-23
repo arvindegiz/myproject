@@ -16,7 +16,7 @@ function fetch_data($db, $tableName, $columns){
 }else{
 
 $columnName = implode(", ", $columns);
-$query = "SELECT ".$columnName." FROM $tableName"." ORDER BY id DESC";
+$query = "SELECT ".$columnName." FROM $tableName"." ORDER BY id ASC";
 $result = $db->query($query);
 
 if($result== true){ 

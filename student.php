@@ -32,7 +32,7 @@
 		<div class="m-5">
 			<h1 class="text-center">Add Student</h1>
 		</div>
-		<form id="add_student_form" class="col-6 mx-auto" method="post" action="add_student.php">
+		<form id="add_student_form" class="col-6 mx-auto" method="post" action="add_edit_student.php">
 		  <div class="row mb-3">
 		    <label for="" class="col-sm-2 col-form-label">Name</label>
 		    <div class="col-sm-10">
@@ -68,26 +68,6 @@
 		    </div>
 		  </div>
 
-		   <!-- <div class="row mb-3">
-		    <label for="" class="col-sm-2 col-form-label">Created</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="">
-		    </div>
-		  </div>
-
-		   <div class="row mb-3">
-		    <label for="" class="col-sm-2 col-form-label">Modefied</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="">
-		    </div>
-		  </div>
-
-		   <div class="row mb-3">
-		    <label for="" class="col-sm-2 col-form-label">Deleted</label>
-		    <div class="col-sm-10">
-		      <input type="text" class="form-control" id="">
-		    </div>
-		  </div> -->
 		  
 		 <div class="text-center">
 		 	<button type="submit" name="submit" class="btn btn-primary">Submit</button>

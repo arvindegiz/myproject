@@ -19,10 +19,10 @@ include("studentlist.php");
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="">Home</a>
+          <a class="nav-link active" aria-current="page" href="student.php">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Add Student</a>
+          <a class="nav-link" href="add_edit_student.php">Add Student</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Edit Student</a>
@@ -51,6 +51,7 @@ include("studentlist.php");
 			      if(is_array($fetchData)){      
 			      $sn=1;
 			      foreach($fetchData as $data){
+			      $student_id =	$data['id'];
 			    ?>	
 		    <tr>
 		      <th scope="row"><?php echo $sn; ?></th>
@@ -61,7 +62,7 @@ include("studentlist.php");
 		      <td><?php echo $data['section']??''; ?></td>
 		      <td>
 				<div class="d-grid gap-2 d-md-block">
-				  <button class="btn btn-primary" type="button">Edit</button>
+				  <button class="btn btn-primary" type="button" onclick="window.location.href='add_edit_student.php?id=<?php echo $student_id; ?>'" >Edit</button>
 				  <button class="btn btn-danger" type="button">Delete</button>
 				</div>
 		      </td>
@@ -75,38 +76,7 @@ include("studentlist.php");
 			    <tr>
 			    <?php
 			    }?>
-		    <!-- <tr>
-		      <th scope="row">2</th>
-		      <td>Mark</td>
-		      <td>01-05-2002</td>
-		      <td>5th</td>
-		      <td>A</td>
-		      <td>02</td>
-		      <td>22-06-2023</td>
-		      <td>23-06-2023</td>
-		      <td>
-				<div class="d-grid gap-2 d-md-block">
-				  <button class="btn btn-primary" type="button">Edit</button>
-				  <button class="btn btn-danger" type="button">Delete</button>
-				</div>
-		      </td>
-		    </tr>
-		    <tr>
-		      <th scope="row">3</th>
-		      <td>Mark</td>
-		      <td>01-05-2002</td>
-		      <td>4th</td>
-		      <td>B</td>
-		      <td>03</td>
-		      <td>22-06-2023</td>
-		      <td>23-06-2023</td>
-		      <td>
-				<div class="d-grid gap-2 d-md-block">
-				  <button class="btn btn-primary" type="button">Edit</button>
-				  <button class="btn btn-danger" type="button">Delete</button>
-				</div>
-		      </td>
-		    </tr> -->
+		    
 		  </tbody>
 		</table>
 		</div>
