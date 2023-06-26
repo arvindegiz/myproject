@@ -12,7 +12,7 @@ include("studentlist.php");
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
-    <a class="navbar-brand" href="#">Arvind</a>
+    <a class="navbar-brand" href="student.php">Crud Operation</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -63,7 +63,7 @@ include("studentlist.php");
 		      <td>
 				<div class="d-grid gap-2 d-md-block">
 				  <button class="btn btn-primary" type="button" onclick="window.location.href='add_edit_student.php?id=<?php echo $student_id; ?>'" >Edit</button>
-				  <button class="btn btn-danger" type="button"><a class="text-white" href="deleted.php?deleteid='.$id.'">Delete</a></button>
+				  <button class="btn btn-danger" type="button"><a class="text-white" href="add_edit_student.php?deleteid='.$id.'">Delete</a></button>
 				</div>
 		      </td>
 		    </tr>
