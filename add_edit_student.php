@@ -1,34 +1,15 @@
 <?php
 include 'database.php';
 
-
-if(isset($_POST['submit'])){ 
-// $id = $_POST['id'];
-$name = $_POST['name'];
-$dob = $_POST['dob'];
-$class = $_POST['class'];
-$section = $_POST['section'];
-$roll_no = $_POST['roll_no'];
-$created = time();
-
-$sql = "INSERT INTO students (name, dob, class, section, roll_no,created)
-VALUES ('$name', '$dob', '$class' , '$section' , '$roll_no' , '$created')";
-
-if ($conn->query($sql) === TRUE) {
-  echo "New record created successfully";
-} else {
-  echo "Error: " . $sql . "<br>" . $conn->error;
+if(isset($_GET['id']) && !empty($_GET['id'])){
+  $sql = "SELECT * from students where id = ".$_GET['id']." limit 1";
+  $res = $conn->query($sql);
+  $data = mysqli_fetch_assoc($res); 
+  // print_r($data['id']);
 }
-// if($name !=''||$dob !=''){
-// //Insert Query of SQL
-// $query = mysql_query("insert into student(student_name, student_email, student_contact, student_address) values ('$name', '$dob', '$class', '$section' , '$roll_no', '$created')");
-// echo "<br/><br/><span>Data Inserted successfully...!!</span>";
-// }
-// else{
-// echo "<p>Insertion Failed <br/> Some Fields are Blank....!!</p>";
-// }
-}
+
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -54,7 +35,7 @@ if ($conn->query($sql) === TRUE) {
           <a class="nav-link" href="#">Add Student</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Edit Student</a>
+          <a class="nav-link" href="listing.php">Edit Student</a>
         </li>
        </ul>
     </div>
@@ -62,102 +43,166 @@ if ($conn->query($sql) === TRUE) {
 </nav>
   <div class="container">
     <div class="m-5">
-      <h1 class="text-center">Add Student</h1>
+      <h1 class="text-center">Edit Student</h1>
     </div>
-    <form id="add_student_form" class="col-6 mx-auto" method="post" action="add_student.php">
+    <form id="add_student_form" class="col-6 mx-auto" method="post" action="">
+    <?php
+      if(isset($_GET['id'])){ ?>
+        <input name="id" type="hidden" class="form-control" id="" value="<?= $_GET['id'] ?>" required>
+      <?php } ?>
       <div class="row mb-3">
         <label for="" class="col-sm-2 col-form-label">Name</label>
         <div class="col-sm-10">
-          <input name="name" type="text" class="form-control" id="" required>
+          <input name="name" type="text" class="form-control" id="" value="<?php if(isset($_GET['id'])){ echo $data['name']; } ?>" required>
         </div>
       </div>
 
        <div class="row mb-3">
         <label for="" class="col-sm-2 col-form-label">Dob</label>
         <div class="col-sm-10">
-          <input name="dob" type="date" class="form-control" id="" required>
+          <input name="dob" type="date" class="form-control" id="" value="<?php if(isset($_GET['id'])){ echo $data['dob']; } ?>" required>
         </div>
       </div>
 
        <div class="row mb-3">
         <label for="" class="col-sm-2 col-form-label">Class</label>
         <div class="col-sm-10">
-          <input name="class" type="text" class="form-control" id="" required>
+          <input name="class" type="text" class="form-control" id="" value="<?php if(isset($_GET['id'])){ echo $data['class']; } ?>" required>
         </div>
       </div>
 
        <div class="row mb-3">
         <label for="" class="col-sm-2 col-form-label">Section</label>
         <div class="col-sm-10">
-          <input name="section" type="text" class="form-control" id="" required>
+          <input name="section" type="text" class="form-control" id="" value="<?php if(isset($_GET['id'])){ echo $data['section']; } ?>" required>
         </div>
       </div>
 
        <div class="row mb-3">
         <label for="" class="col-sm-2 col-form-label">Roll no</label>
         <div class="col-sm-10">
-          <input name="roll_no" type="text" class="form-control" id="" required>
+          <input name="roll_no" type="text" class="form-control" id="" value="<?php if(isset($_GET['id'])){ echo $data['roll_no']; } ?>" required>
         </div>
       </div>
 
-      
+
      <div class="text-center">
-      <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" name="<?php if(isset($_GET['id'])){ echo "edit_submit"; } else { echo "submit"; } ?>" class="btn btn-primary">Save</button>
      </div>
-     
+
     </form>
-        
-        
+
+
       </div>
-      
-      
+
+
 
 </body>
-  
-  
-  
+
+
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
 <style type="text/css">
-/*  input {  
-  border-radius: 5px;  
-  border: 1px solid #ccc;  
-  padding: 4px;  
-  font-family: 'Lato';  
-  width: 300px;  
-  margin-top: 10px;  
-} */ 
-/*label {  
-  width: 300px;  
-  font-weight: bold;  
-  display: inline-block;  
-  margin-top: 20px;  
-}*/  
-/*label span {  
-  font-size: 1rem;  
-}*/  
-label.error {  
-    color: red;  
-    font-size: 1rem;  
-    display: block;  
-    margin-top: 5px;  
-}  
-input.error {  
-    border: 1px solid red;  
-    font-weight: 200;  
-    color: red;  
-}   
+  /*  input {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 4px;
+    font-family: 'Lato';
+    width: 300px;
+    margin-top: 10px;
+  } */
+  /*label {
+    width: 300px;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 20px;
+  }*/
+  /*label span {
+    font-size: 1rem;
+  }*/
+  label.error {
+      color: red;
+      font-size: 1rem;
+      display: block;
+      margin-top: 5px;
+  }
+  input.error {
+      border: 1px solid red;
+      font-weight: 200;
+      color: red;
+  }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>  
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"> </script>  
-<script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"> </script>
+<script>
 
-$(document).ready (function () {  
-  $("#add_student_form").validate ();  
-}); 
+$(document).ready (function () {
+  $("#add_student_form").validate ();
+});
 
 
 
 </script>
+<?php
+if(isset($_POST['submit'])){
+  $name = $_POST['name'];
+  $dob = $_POST['dob'];
+  $class = $_POST['class'];
+  $section = $_POST['section'];
+  $roll_no = $_POST['roll_no'];
+  $created = time();
+
+  $sql = "INSERT INTO students (name, dob, class, section, roll_no,created)
+  VALUES ('$name', '$dob', '$class' , '$section' , '$roll_no' , '$created')";
+
+  if ($conn->query($sql) === TRUE) {
+    echo "New record created successfully";
+  } else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+  }
+}
+
+if(isset($_POST['edit_submit'])){
+  $id = $_POST['id'];
+  $name = $_POST['name'];
+  $dob = $_POST['dob'];
+  $class = $_POST['class'];
+  $section = $_POST['section'];
+  $roll_no = $_POST['roll_no'];
+  $created = time();
+
+  $sql = "UPDATE students set name = '$name', dob = '$dob', class = '$class', section = '$section', roll_no = '$roll_no' where id = '$id'";
+
+  if ($conn->query($sql) === TRUE) {
+    echo "Record updated successfully";
+  } else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+  }
+}
+
+// if(isset($_GET['deleteid']))
+// {
+// $rid=intval($_GET['deleteid']);
+// $sql=mysqli_query("delete from students where ID=$rid");
+// echo "<script>alert('Data deleted');</script>"; 
+// echo "<script>window.location.href = 'listing.php'</script>";     
+// } 
+
+// if(isset($_POST['variable']['deleteid'])){
+//   $id=$_POST['variable']['deleteid'];
+
+//   $sql = "delete from 'student' where id= $id;";
+//  // echo $id; die();
+//   $result = mysqli_query($con, $sql);
+//   if($result){
+//     echo "Deleted Successfull";
+//   }else{
+//     die(mysqli_error($con));
+//   }
+// }
+
+
+?>

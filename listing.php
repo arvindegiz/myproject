@@ -22,10 +22,10 @@ include("studentlist.php");
           <a class="nav-link active" aria-current="page" href="student.php">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="add_edit_student.php">Add Student</a>
+          <a class="nav-link" href="student.php">Add Student</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Edit Student</a>
+          <a class="nav-link" href="#">List Student</a>
         </li>
        </ul>
     </div>
@@ -40,9 +40,9 @@ include("studentlist.php");
 		      <th scope="col">S.N.</th>
 		      <th scope="col">Name</th>
 		      <th scope="col">Dob</th>
-		      <th scope="col">Class</th>
-		      <th scope="col">Section</th>
+		      <th scope="col">Class</th>	      
 		      <th scope="col">Roll No</th>
+		      <th scope="col">Section</th>
 		      <th scope="col">Action</th>
 		    </tr>
 		  </thead>
@@ -63,7 +63,7 @@ include("studentlist.php");
 		      <td>
 				<div class="d-grid gap-2 d-md-block">
 				  <button class="btn btn-primary" type="button" onclick="window.location.href='add_edit_student.php?id=<?php echo $student_id; ?>'" >Edit</button>
-				  <button class="btn btn-danger" type="button">Delete</button>
+				  <button class="btn btn-danger" type="button"><a class="text-white" href="deleted.php?deleteid='.$id.'">Delete</a></button>
 				</div>
 		      </td>
 		    </tr>

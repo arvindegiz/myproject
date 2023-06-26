@@ -22,7 +22,7 @@
           <a class="nav-link" href="#">Add Student</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Edit Student</a>
+          <a class="nav-link" href="listing.php">List Student</a>
         </li>
        </ul>
     </div>
