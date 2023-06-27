@@ -53,6 +53,7 @@ include("studentlist.php");
 			      foreach($fetchData as $data){
 			      $student_id =	$data['id'];
 			    ?>	
+
 		    <tr>
 		      <th scope="row"><?php echo $sn; ?></th>
 		      <td><?php echo $data['name']??''; ?></td>
@@ -63,7 +64,7 @@ include("studentlist.php");
 		      <td>
 				<div class="d-grid gap-2 d-md-block">
 				  <button class="btn btn-primary" type="button" onclick="window.location.href='add_edit_student.php?id=<?php echo $student_id; ?>'" >Edit</button>
-				  <button class="btn btn-danger" type="button"><a class="text-white" href="add_edit_student.php?deleteid='.$id.'">Delete</a></button>
+				  <button class="btn btn-danger" type="button"><a class="text-white" href="deleted.php?deleteid=<?php echo $student_id; ?>">Delete</a></button>
 				</div>
 		      </td>
 		    </tr>
