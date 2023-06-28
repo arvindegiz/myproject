@@ -1,13 +1,35 @@
 <?php
 include("database.php");
 // SQL query
-$sql = "SELECT * FROM students  where deleted = 0";
+
+
+if (isset($_GET['pageno'])) {
+	$pageno = $_GET['pageno'];
+} else {
+	$pageno = 1;
+}
+$no_of_records_per_page = 5;
+$offset = ($pageno-1) * $no_of_records_per_page;
+
+
+
+
+$total_pages_sql = "SELECT COUNT(*) FROM students WHERE deleted = 0 ";
+$result = mysqli_query($conn,$total_pages_sql);
+$total_rows = mysqli_fetch_array($result)[0];
+$total_pages = ceil($total_rows / $no_of_records_per_page);
+
+
+
+$sql = "SELECT * FROM students  where deleted = 0 LIMIT $offset, $no_of_records_per_page";
 
 // Execute the query
 $result = $conn->query($sql);
 
-
-
+// while($row = mysqli_fetch_array($res_data)){
+// 	//here goes the data
+// }
+// mysqli_close($conn);
 
 ?>
 <!DOCTYPE html>
@@ -19,6 +41,10 @@ $result = $conn->query($sql);
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<title>My Project</title>
 </head>
+<script src=
+        "https://code.jquery.com/jquery-3.6.0.min.js"
+        >
+    </script>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
@@ -43,36 +69,54 @@ $result = $conn->query($sql);
 </nav>
 	<div class="container">
 		<h1 class="text-center my-5">List Student</h1>
-		<div style="overflow-x:auto;">
+		<div style="">
 
-		<div class="row my-4">
-			<div class="col-md-3">
+		<div class="row">
+			<div class="col-md-3 my-4">
 				<div class="input-group">
-					<input class="form-control" type="search" value="" placeholder="Search name" id="example-search-input">
+					<input class="form-control" type="search" name="search" placeholder="Search name" id="nameInput">
 					<span class="input-group-append">
-						<button class="btn btn-outline-secondary bg-primary text-white" type="button">
+						<button class="btn btn-outline-secondary bg-primary text-white" id="search_student" type="button">
 							<i class="fa fa-search"></i>
 						</button>
 					</span>
 				</div>
 			</div>
+			<div class="col-md-3 my-4">
+				<select class="form-control" name="" id="sortbyAtribute">
+					<option value="sort_by_name_asc">Sort by Name A-Z</option>
+					<option value="sort_by_name_dsc">Sort by Name Z-A</option>
+					<option value="sort_by_roll_no">Sort by Roll No</option>
+					<option value="sort_by_Class">Sort by Class</option>
+				</select>
+			<!-- <div class="dropdown">
+				<button class="btn btn-primary dropdown-toggle col-md-9" type="button" id="sortbyAtribute" data-bs-toggle="dropdown" aria-expanded="false">
+					Sort Data
+				</button>
+				<ul class="dropdown-menu">
+					<li><button class="dropdown-item" type="button">Sort by Name A-Z</button></li>
+					<li><button class="dropdown-item" type="button">Sort by Name Z-A</button></li>
+					<li><button class="dropdown-item" type="button">Sort by Roll No</button></li>
+					<li><button class="dropdown-item" type="button">Sort by Class</button></li>
+				</ul>
+				</div> -->
+			</div>
 			<div class="col-md-3"></div>
-			<div class="col-md-3"></div>
-			<div class="col-md-3">
-			<a class="btn btn-primary float-end col-md-8" href="student.php" role="button">Add Student</a>
+			<div class="col-md-3 my-4">
+			<a class="btn btn-primary float-end col-md-9" href="student.php" role="button">Add Student</a>
 			</div>
 		</div>
     
 
-		<table class="table table-striped align-middle table-bordered border-secondary text-center table-responsive">
+		<table id="dataTable" class="table table-striped align-middle table-bordered border-secondary text-center table-responsive">
 		  <thead class="bg-primary text-white">
 		    <tr>
 		      <th scope="col">S.N.</th>
-		      <th scope="col">Name</th>
+		      <th id="student_name" scope="col">Name</th>
 		      <th scope="col">Dob</th>
 		      <th scope="col">Class</th>	      
 		      <th scope="col">Roll No</th>
-		      <th scope="col">Section</th>
+		      <th id="student_section" scope="col">Section</th>
 		      <th scope="col">Action</th>
 		    </tr>
 		  </thead>
@@ -80,10 +124,12 @@ $result = $conn->query($sql);
 			<?php
 			if ($result->num_rows > 0) {
 				// Output data of each row
-				$sn=1;
+				$sn= $offset+1;
 				while ($row = $result->fetch_assoc()) { 
 					$student_id =	$row['id'];
-			      	$dob = date('Y-m-d', $row['dob']);?>
+			      	$dob = date('Y-m-d', $row['dob']);
+					?>
+
 				<tr>
 					<th scope="row"><?php echo $sn; ?></th>
 					<td><?php echo $row['name']??''; ?></td>
@@ -106,11 +152,99 @@ $result = $conn->query($sql);
 		    
 		  </tbody>
 		</table>
+			<div class="d-flex justify-content-center">
+				<ul class="pagination">
+					<li class="page-item <?php if($pageno <= 1){ echo 'disabled'; } ?>">
+					<a class="page-link" href="<?php if($pageno <= 1){ echo '#'; } else { echo "?pageno=".($pageno - 1); } ?>">Previous</a>
+					</li>
+					<li class="page-item active">
+						<a class="page-link mx-2" href="?pageno=1">1</a>
+					</li>
+					<li class="page-item " aria-current="page">
+						<a class="page-link " href="?pageno=<?php echo $total_pages; ?>">2</a>
+					</li>
+					<!-- <li class="page-item">
+						<a class="page-link mx-2" href="#">3</a>
+					</li> -->
+					<li class="page-item mx-2 <?php if($pageno >= $total_pages){ echo 'disabled'; } ?>">
+						<a class="page-link" href="<?php if($pageno >= $total_pages){ echo '#'; } else { echo "?pageno=".($pageno + 1); } ?>">Next</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 	
 
 	
 	</body>
+
+	<script>
+// search by name
+	$(document).ready(function() {
+		$('#search_student').click('input', function() {
+			filterTable();
+			// alert("This is an alert message!");
+		});
+
+		function filterTable() {
+			const searchName = $('#nameInput').val().toLowerCase();
+			
+
+			$('#dataTable tbody tr').each(function() {
+				const name = $(this).find('td:first').text().toLowerCase();
+				const nameMatch = name.includes(searchName);
+				
+				if (nameMatch) {
+					$(this).show();
+				} else {
+					$(this).hide();
+				}
+			});
+		}
+	});
+// sort by name
+
+// $(document).ready(function() {
+//     $('#dataTable').tablesorter({
+//         sortList: [[0, 0]] // Sort by the first column (index 0) in ascending order (0)
+//     });
+// });
+var table = $('#dataTable');
+    
+    $('#student_name, #student_section')
+        .wrapInner('<span title="sort this column"/>')
+        .each(function(){
+            
+            var th = $(this),
+                thIndex = th.index(),
+                inverse = false;
+            
+            th.click(function(){
+                
+                table.find('td').filter(function(){
+                    
+                    return $(this).index() === thIndex;
+                    
+                }).sortElements(function(a, b){
+                    
+                    return $.text([a]) > $.text([b]) ?
+                        inverse ? -1 : 1
+                        : inverse ? 1 : -1;
+                    
+                }, function(){
+                    
+                    // parentNode is the element we want to move
+                    return this.parentNode; 
+                    
+                });
+                
+                inverse = !inverse;
+                    
+            });
+                
+        });
+
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </html>
