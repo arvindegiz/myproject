@@ -155,6 +155,9 @@ if(isset($_POST['submit'])){
   $roll_no = $_POST['roll_no'];
   $created = time();
 
+  $dob = new DateTime($dob);
+  $dob = $dob->getTimestamp(); 
+
   $sql = "INSERT INTO students (name, dob, class, section, roll_no,created)
   VALUES ('$name', '$dob', '$class' , '$section' , '$roll_no' , '$created')";
 
@@ -183,26 +186,6 @@ if(isset($_POST['edit_submit'])){
   }
 }
 
-// if(isset($_GET['deleteid']))
-// {
-// $rid=intval($_GET['deleteid']);
-// $sql=mysqli_query("delete from students where ID=$rid");
-// echo "<script>alert('Data deleted');</script>"; 
-// echo "<script>window.location.href = 'listing.php'</script>";     
-// } 
-
-// if(isset($_POST['variable']['deleteid'])){
-//   $id=$_POST['variable']['deleteid'];
-
-//   $sql = "delete from 'student' where id= $id;";
-//  // echo $id; die();
-//   $result = mysqli_query($con, $sql);
-//   if($result){
-//     echo "Deleted Successfull";
-//   }else{
-//     die(mysqli_error($con));
-//   }
-// }
 
 
 ?>
