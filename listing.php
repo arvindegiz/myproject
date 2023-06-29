@@ -21,7 +21,8 @@ $total_pages = ceil($total_rows / $no_of_records_per_page);
 
 
 
-$sql = "SELECT * FROM students  where deleted = 0 LIMIT $offset, $no_of_records_per_page";
+$sql = "SELECT * FROM students  where deleted = 0 ORDER BY name ASC LIMIT $offset, $no_of_records_per_page";
+// $sql = "SELECT * FROM students  where deleted = 0 ORDER BY name DSC LIMIT $offset, $no_of_records_per_page";
 
 // Execute the query
 $result = $conn->query($sql);
@@ -30,6 +31,25 @@ $result = $conn->query($sql);
 // 	//here goes the data
 // }
 // mysqli_close($conn);
+
+// $columnName = $_POST['name'];
+// $sort = $_POST['sort'];
+
+// echo $select_query = "SELECT * FROM STUDENTS ORDER BY ".$columnName." ".$sort." ";
+
+// $result = mysqli_query($conn,$sql);
+
+// $html = '';
+// while($row = mysqli_fetch_array($result)){
+//   $name = $row['name'];
+  
+//   $html .= "<tr>
+//     <td>".$name."</td>
+    
+//   </tr>";
+// }
+
+// echo $html;
 
 ?>
 <!DOCTYPE html>
@@ -83,23 +103,23 @@ $result = $conn->query($sql);
 				</div>
 			</div>
 			<div class="col-md-3 my-4">
-				<select class="form-control" name="" id="sortbyAtribute">
+				<!-- <select class="form-control" name="" id="sortbyAtribute">
 					<option value="sort_by_name_asc">Sort by Name A-Z</option>
 					<option value="sort_by_name_dsc">Sort by Name Z-A</option>
 					<option value="sort_by_roll_no">Sort by Roll No</option>
 					<option value="sort_by_Class">Sort by Class</option>
-				</select>
-			<!-- <div class="dropdown">
+				</select> -->
+			<div class="dropdown">
 				<button class="btn btn-primary dropdown-toggle col-md-9" type="button" id="sortbyAtribute" data-bs-toggle="dropdown" aria-expanded="false">
 					Sort Data
 				</button>
 				<ul class="dropdown-menu">
-					<li><button class="dropdown-item" type="button">Sort by Name A-Z</button></li>
-					<li><button class="dropdown-item" type="button">Sort by Name Z-A</button></li>
-					<li><button class="dropdown-item" type="button">Sort by Roll No</button></li>
-					<li><button class="dropdown-item" type="button">Sort by Class</button></li>
+					<li><button class="dropdown-item" id="sort_by_name_asc" type="button">Sort by Name A-Z</button></li>
+					<li><button class="dropdown-item" id="sort_by_name_dsc" type="button">Sort by Name Z-A</button></li>
+					<li><button class="dropdown-item" id="sort_by_roll_no" type="button">Sort by Roll No</button></li>
+					<li><button class="dropdown-item" id="sort_by_Class" type="button">Sort by Class</button></li>
 				</ul>
-				</div> -->
+				</div>
 			</div>
 			<div class="col-md-3"></div>
 			<div class="col-md-3 my-4">
@@ -205,45 +225,46 @@ $result = $conn->query($sql);
 // sort by name
 
 // $(document).ready(function() {
-//     $('#dataTable').tablesorter({
+//     $('#sort_by_name_asc').tablesorter({
+// 		alert("sort by name");
 //         sortList: [[0, 0]] // Sort by the first column (index 0) in ascending order (0)
 //     });
 // });
-var table = $('#dataTable');
-    
-    $('#student_name, #student_section')
-        .wrapInner('<span title="sort this column"/>')
-        .each(function(){
-            
-            var th = $(this),
-                thIndex = th.index(),
-                inverse = false;
-            
-            th.click(function(){
-                
-                table.find('td').filter(function(){
-                    
-                    return $(this).index() === thIndex;
-                    
-                }).sortElements(function(a, b){
-                    
-                    return $.text([a]) > $.text([b]) ?
-                        inverse ? -1 : 1
-                        : inverse ? 1 : -1;
-                    
-                }, function(){
-                    
-                    // parentNode is the element we want to move
-                    return this.parentNode; 
-                    
-                });
-                
-                inverse = !inverse;
-                    
+
+// $(document).on("change", "#sort_by_name_asc" ,function(){
+// 			// jQuery('body').css("opacity", "0.5");
+// 		    var query_value = jQuery(this).val();
+// 			prepare_redirect_URL('sortByAttribute', query_value)
+//         });
+
+$(document).ready(function () {
+            $("#sort_by_name_asc").click(function () {
+				// $('#nameTable').DataTable();
+                alert("sort by name");
             });
-                
         });
 
+
+	// 	function prepare_redirect_URL(filter_type, query_value){
+	// 	const cut_url = new URL(window.location.href);
+	// 	var is_removed = false;
+	// 	if (cut_url.searchParams.has(filter_type)) {
+	// 		cut_url.searchParams.delete(filter_type);
+	// 		is_removed = true;
+	// 	}
+
+	// 	var matches = window.location.href.match(/[a-z\d]+=[a-z\d]+/gi);
+	// 	var count = matches? matches.length : 0;
+
+	// 	if(is_removed) {
+	// 		count = count-1;
+	// 	}
+		
+	// 	var param_add = count > 0  ? "&" : "?";
+
+	// 	window.location.href = cut_url+param_add+filter_type+'='+query_value;
+		
+	// }
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
